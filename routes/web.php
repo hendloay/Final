@@ -1,14 +1,13 @@
 <?php
 
-use App\Http\Controllers\UserController;
-
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TaskController;
 
+Route::get('/', function () { return view('welcome'); });
+Route::view('cms/admin', 'cms.parent')->name('dashboard');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-//Route::view('front1','front.index');
+Route::get('cms/tasks-all/trashed', [TaskController::class, 'trashed'])->name('tasks.trashed');
+Route::post('cms/tasks-restore/{task}', [TaskController::class, 'restore'])->name('tasks.restore');
+Route::delete('cms/tasks-force/{task}', [TaskController::class, 'forceDelete'])->name('tasks.forceDelete');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::resource('cms/tasks', TaskController::class);
